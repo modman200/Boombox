@@ -20,46 +20,46 @@ end
 if Framework == "ESX" then
     ESX.RegisterUsableItem('boombox', function(source)
         local xPlayer = ESX.GetPlayerFromId(source)
-        TriggerClientEvent('wasabi_boombox:useBoombox', source)
+        TriggerClientEvent('mmts-boombox:useBoombox', source)
         xPlayer.removeInventoryItem('boombox', 1)
     end)
 elseif Framework == "qb" then
     QBCore.Functions.CreateUseableItem('boombox', function(source)
         local Player = QBCore.Functions.GetPlayer(source)
-        TriggerClientEvent('wasabi_boombox:useBoombox', source)
+        TriggerClientEvent('mmts-boombox:useBoombox', source)
         Player.Functions.RemoveItem('boombox', 1)
     end)
 end
 
-RegisterServerEvent('wasabi_boombox:deleteObj', function(netId)
-    TriggerClientEvent('wasabi_boombox:deleteObj', -1, netId)
+RegisterServerEvent('mmts-boombox:deleteObj', function(netId)
+    TriggerClientEvent('mmts-boombox:deleteObj', -1, netId)
 end)
 
 if Framework == "ESX" then
-    RegisterServerEvent('wasabi_boombox:objDeleted', function()
+    RegisterServerEvent('mmts-boombox:objDeleted', function()
         local xPlayer = ESX.GetPlayerFromId(source)
         xPlayer.addInventoryItem('boombox', 1)
     end)
 elseif Framework == "qb" then
-    RegisterServerEvent('wasabi_boombox:objDeleted', function()
+    RegisterServerEvent('mmts-boombox:objDeleted', function()
         local Player = QBCore.Functions.GetPlayer(source)
         Player.Functions.AddItem('boombox', 1)
     end)
 end
 
-RegisterNetEvent("wasabi_boombox:soundStatus")
-AddEventHandler("wasabi_boombox:soundStatus", function(type, musicId, data)
-    TriggerClientEvent("wasabi_boombox:soundStatus", -1, type, musicId, data)
+RegisterNetEvent("mmts-boombox:soundStatus")
+AddEventHandler("mmts-boombox:soundStatus", function(type, musicId, data)
+    TriggerClientEvent("mmts-boombox:soundStatus", -1, type, musicId, data)
 end)
 
-RegisterNetEvent("wasabi_boombox:syncActive")
-AddEventHandler("wasabi_boombox:syncActive", function(activeRadios)
-    TriggerClientEvent("wasabi_boombox:syncActive", -1, activeRadios)
+RegisterNetEvent("mmts-boombox:syncActive")
+AddEventHandler("mmts-boombox:syncActive", function(activeRadios)
+    TriggerClientEvent("mmts-boombox:syncActive", -1, activeRadios)
 end)
 
 if Framework == "ESX" then
-    RegisterServerEvent('wasabi_boombox:save')
-    AddEventHandler('wasabi_boombox:save', function(name, link)
+    RegisterServerEvent('mmts-boombox:save')
+    AddEventHandler('mmts-boombox:save', function(name, link)
         local xPlayer = ESX.GetPlayerFromId(source)
         SongConfirmed(16448250, "Save Song Log", "Player Name: **"..xPlayer.getName().."**\n Player Identifier: **"..xPlayer.getIdentifier().."**\n Song Name: **"..name.."**\n Song Link: **"..link.."**\n Date: "..os.date("** Time: %H:%M Date: %d.%m.%y **").."", "Made by Andistyler")
         MySQL.Async.insert('INSERT INTO `boombox_songs` (`identifier`, `label`, `link`) VALUES (@identifier, @label, @link)', {
@@ -69,8 +69,8 @@ if Framework == "ESX" then
         })
     end)
 elseif Framework == "qb" then
-    RegisterServerEvent('wasabi_boombox:save')
-    AddEventHandler('wasabi_boombox:save', function(name, link)
+    RegisterServerEvent('mmts-boombox:save')
+    AddEventHandler('mmts-boombox:save', function(name, link)
         local Player = QBCore.Functions.GetPlayer(source)
         local CitizenId = Player.PlayerData.citizenid
         SongConfirmed(16448250, "Save Song Log", "Player Name: **"..GetPlayerName(source).."**\n  Player CitizenID: " .. CitizenId .."**\n Song Name: **"..name.."**\n Song Link: **"..link.."**\n Date: "..os.date("** Time: %H:%M Date: %d.%m.%y **").."", "Made by Andistyler")
@@ -83,8 +83,8 @@ elseif Framework == "qb" then
 end
 
 if Framework == "ESX" then
-    RegisterServerEvent('wasabi_boombox:deleteSong')
-    AddEventHandler('wasabi_boombox:deleteSong', function(data)
+    RegisterServerEvent('mmts-boombox:deleteSong')
+    AddEventHandler('mmts-boombox:deleteSong', function(data)
         local xPlayer = ESX.GetPlayerFromId(source)
         MySQL.Async.execute('DELETE FROM `boombox_songs` WHERE `identifier` = @identifier AND label = @label AND link = @link', {
             ["@identifier"] = xPlayer.identifier,
@@ -93,8 +93,8 @@ if Framework == "ESX" then
         })
     end)
 elseif Framework == "qb" then
-    RegisterServerEvent('wasabi_boombox:deleteSong')
-    AddEventHandler('wasabi_boombox:deleteSong', function(data)
+    RegisterServerEvent('mmts-boombox:deleteSong')
+    AddEventHandler('mmts-boombox:deleteSong', function(data)
         local Player = QBCore.Functions.GetPlayer(source)
         MySQL.Async.execute('DELETE FROM `boombox_songs` WHERE `citizenid` = @citizenid AND label = @label AND link = @link', {
             ["@citizenid"] = Player.PlayerData.citizenid,
@@ -105,7 +105,7 @@ elseif Framework == "qb" then
 end
 
 if Framework == "ESX" then
-    ESX.RegisterServerCallback('wasabi_boombox:getSavedSongs', function(source, cb)
+    ESX.RegisterServerCallback('mmts-boombox:getSavedSongs', function(source, cb)
         local savedSongs = {}
         local xPlayer = ESX.GetPlayerFromId(source)
         MySQL.Async.fetchAll('SELECT label, link FROM boombox_songs WHERE identifier = @identifier', {
@@ -124,7 +124,7 @@ if Framework == "ESX" then
         end)
     end)
 elseif Framework == "qb" then
-    QBCore.Functions.CreateCallback('wasabi_boombox:getSavedSongs', function(source, cb)
+    QBCore.Functions.CreateCallback('mmts-boombox:getSavedSongs', function(source, cb)
         local savedSongs = {}
         local Player = QBCore.Functions.GetPlayer(source)
         MySQL.Async.fetchAll('SELECT label, link FROM boombox_songs WHERE citizenid = @citizenid', {
@@ -145,14 +145,14 @@ elseif Framework == "qb" then
 end
 
 if Framework == "ESX" then
-    RegisterNetEvent("wasabi_boombox:DiscordKnows")
-    AddEventHandler("wasabi_boombox:DiscordKnows", function(link)
+    RegisterNetEvent("mmts-boombox:DiscordKnows")
+    AddEventHandler("mmts-boombox:DiscordKnows", function(link)
         local xPlayer = ESX.GetPlayerFromId(source)
         SongConfirmed(16448250, "Play Song Log", "Player Name: **"..xPlayer.getName().."**\n Player Identifier: **"..xPlayer.getIdentifier().."**\n Song Link: **"..link.."**\n Date: "..os.date("** Time: %H:%M Date: %d.%m.%y **").."", "Made by Andistyler")
     end)
 elseif Framework == "qb" then
-    RegisterNetEvent("wasabi_boombox:DiscordKnows")
-    AddEventHandler("wasabi_boombox:DiscordKnows", function(link)
+    RegisterNetEvent("mmts-boombox:DiscordKnows")
+    AddEventHandler("mmts-boombox:DiscordKnows", function(link)
         local Player = QBCore.Functions.GetPlayer(source)
         local CitizenId = Player.PlayerData.citizenid
         SongConfirmed(16448250, "Play Song Log", "Player Name: **"..GetPlayerName(source).."**\n  Player CitizenID: " .. CitizenId .."**\n Song Link: **"..link.."**\n Date: "..os.date("** Time: %H:%M Date: %d.%m.%y **").."", "Made by Andistyler")

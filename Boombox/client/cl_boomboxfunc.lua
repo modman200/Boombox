@@ -52,12 +52,12 @@ if Framework == "ESX" then
                     }, {
                         options = {
                             {
-                                event = 'wasabi_boombox:interact',
+                                event = 'mmts-boombox:interact',
                                 icon = 'fas fa-hand-paper',
                                 label = 'Interact',
                             },
                             {
-                                event = 'wasabi_boombox:pickup',
+                                event = 'mmts-boombox:pickup',
                                 icon = 'fas fa-volume-up',
                                 label = 'Pick Up'
                             }
@@ -93,12 +93,12 @@ elseif Framework == "qb" then
                     }, {
                         options = {
                             {
-                                event = 'wasabi_boombox:interact',
+                                event = 'mmts-boombox:interact',
                                 icon = 'fas fa-hand-paper',
                                 label = 'Interact',
                             },
                             {
-                                event = 'wasabi_boombox:pickup',
+                                event = 'mmts-boombox:pickup',
                                 icon = 'fas fa-volume-up',
                                 label = 'Pick Up'
                             }
@@ -130,7 +130,7 @@ interactBoombox = function(radio, radioCoords)
     else
         activeRadios[radio].pos = radioCoords
     end
-    TriggerServerEvent('wasabi_boombox:syncActive', activeRadios)
+    TriggerServerEvent('mmts-boombox:syncActive', activeRadios)
     if not activeRadios[radio].data.playing then
         lib.registerContext({
             id = 'boomboxFirst',
@@ -140,14 +140,14 @@ interactBoombox = function(radio, radioCoords)
                     title = 'Play Music',
                     description = 'Play Music On Speaker',
                     arrow = true,
-                    event = 'wasabi_boombox:playMenu',
+                    event = 'mmts-boombox:playMenu',
                     args = {type = 'play', id = radio}
                 },
                 {
                     title = 'Saved Songs',
                     description = 'Songs you previously saved',
                     arrow = true,
-                    event = 'wasabi_boombox:savedSongs',
+                    event = 'mmts-boombox:savedSongs',
                     args = {id = radio}
                 }
             }
@@ -162,35 +162,35 @@ interactBoombox = function(radio, radioCoords)
                     title = 'Change Music',
                     description = 'Change music on speaker',
                     arrow = true,
-                    event = 'wasabi_boombox:playMenu',
+                    event = 'mmts-boombox:playMenu',
                     args = {type = 'play', id = radio}
                 },
                 {
                     title = 'Saved Songs',
                     description = 'Songs you previously saved',
                     arrow = true,
-                    event = 'wasabi_boombox:savedSongs',
+                    event = 'mmts-boombox:savedSongs',
                     args = {id = radio}
                 },
                 {
                     title = 'Stop Music',
                     description = 'Stop music on speaker',
                     arrow = false,
-                    event = 'wasabi_boombox:playMenu',
+                    event = 'mmts-boombox:playMenu',
                     args = {type = 'stop', id = radio}
                 },
                 {
                     title = 'Adjust Volume',
                     description = 'Change volume on speaker',
                     arrow = false,
-                    event = 'wasabi_boombox:playMenu',
+                    event = 'mmts-boombox:playMenu',
                     args = {type = 'volume', id = radio}
                 },
                 {
                     title = 'Change Distance',
                     description = 'Change distance on speaker',
                     arrow = false,
-                    event = 'wasabi_boombox:playMenu',
+                    event = 'mmts-boombox:playMenu',
                     args = {type = 'distance', id = radio}
                 }
             }
@@ -208,14 +208,14 @@ selectSavedSong = function(data)
                 title = 'Play Song',
                 description = 'Play this song',
                 arrow = false,
-                event = 'wasabi_boombox:playSavedSong',
+                event = 'mmts-boombox:playSavedSong',
                 args = data
             },
             {
                 title = 'Delete Song',
                 description = 'Delete this song',
                 arrow = true,
-                event = 'wasabi_boombox:deleteSong',
+                event = 'mmts-boombox:deleteSong',
                 args = data
             }
         }
@@ -225,14 +225,14 @@ end
 
 if Framework == "ESX" then
     savedSongsMenu = function(radio)
-        ESX.TriggerServerCallback('wasabi_boombox:getSavedSongs', function(cb)
+        ESX.TriggerServerCallback('mmts-boombox:getSavedSongs', function(cb)
             local radio = radio.id
             local Options = {
                 {
                     title = 'Save A Song',
                     description = 'Save a song to play later',
                     arrow = true,
-                    event = 'wasabi_boombox:saveSong',
+                    event = 'mmts-boombox:saveSong',
                     args = {id = radio}
                 }
             }
@@ -243,7 +243,7 @@ if Framework == "ESX" then
                         title = cb[i].label,
                         description = '',
                         arrow = true,
-                        event = 'wasabi_boombox:selectSavedSong',
+                        event = 'mmts-boombox:selectSavedSong',
                         args = {id = radio, link = cb[i].link, label = cb[i].label}
                     })
                 end
@@ -258,14 +258,14 @@ if Framework == "ESX" then
     end
 elseif Framework == "qb" then
     savedSongsMenu = function(radio)
-        QBCore.Functions.TriggerCallback('wasabi_boombox:getSavedSongs', function(cb)
+        QBCore.Functions.TriggerCallback('mmts-boombox:getSavedSongs', function(cb)
             local radio = radio.id
             local Options = {
                 {
                     title = 'Save A Song',
                     description = 'Save a song to play later',
                     arrow = true,
-                    event = 'wasabi_boombox:saveSong',
+                    event = 'mmts-boombox:saveSong',
                     args = {id = radio}
                 }
             }
@@ -276,7 +276,7 @@ elseif Framework == "qb" then
                         title = cb[i].label,
                         description = '',
                         arrow = true,
-                        event = 'wasabi_boombox:selectSavedSong',
+                        event = 'mmts-boombox:selectSavedSong',
                         args = {id = radio, link = cb[i].link, label = cb[i].label}
                     })
                 end
